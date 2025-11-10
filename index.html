@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Το Ηλιακό Σύστημα!</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    text-align: center;
+    color: white;
+    font-family: "Comic Sans MS", sans-serif;
+    background: url('background.jpg') center/cover no-repeat;
+  }
+
+  h1 {
+    margin: 10px;
+    font-size: 1.8em;
+    color: #ffdf6c;
+    text-shadow: 2px 2px 6px #000;
+  }
+
+  #gameArea {
+    position: relative;
+    width: 100%;
+    height: 80vh;
+    margin: 0 auto;
+  }
+
+  #sun {
+    position: absolute;
+    left: 10%;
+    top: 85%;
+    transform: translate(-50%, -50%);
+    width: 350px;
+    height: 350px;
+    animation: glow 2s infinite alternate;
+    pointer-events: none;
+  }
+
+  @keyframes glow {
+    from { filter: drop-shadow(0 0 10px yellow); }
+    to { filter: drop-shadow(0 0 25px orange); }
+  }
+
+  .planet {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    cursor: grab;
+    user-select: none;
+    transition: transform 0.3s;
+    touch-action: none;
+  }
+
+  .planet.correct {
+    transform: scale(1.3);
+    animation: bounce 0.6s;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+  }
+
+  .target {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    border: 2px dashed rgba(255,255,255,0.25);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  #message {
+    font-size: 1.4em;
+    margin-top: 15px;
+    color: #9ef7ff;
+    text-shadow: 1px 1px 3px #000;
+  }
+</style>
+</head>
+
+<body>
+  <h1>Βάλε τους Πλανήτες στη Σωστή Θέση! ☀️🪐</h1>
+  <div id="gameArea">
+    <!-- Ήλιος -->
+    <img id="sun" src="sun.gif" alt="Ήλιος">
+
+    <!-- Θέσεις γύρω από τον Ήλιο -->
+    <div class="target" id="target1" style="left:200px; top:220px;"></div>
+    <div class="target" id="target2" style="left:400px; top:150px;"></div>
+    <div class="target" id="target3" style="left:580px; top:110px;"></div>
+    <div class="target" id="target4" style="left:750px; top:90px;"></div>
+    <div class="target" id="target5" style="left:900px; top:110px;"></div>
+    <div class="target" id="target6" style="left:1050px; top:200px;"></div>
+    <div class="target" id="target7" style="left:1150px; top:300px;"></div>
+    <div class="target" id="target8" style="left:1200px; top:420px;"></div>
+
+    <!-- Εικόνες πλανητών - βάλτε εδώ τα δικά σας GIFs στο φάκελο 'planets' -->
+    <img src="planets/planet1.gif" class="planet" id="planet1" draggable="true">
+    <img src="planets/planet2.gif" class="planet" id="planet2" draggable="true">
+    <img src="planets/planet3.gif" class="planet" id="planet3" draggable="true">
+    <img src="planets/planet4.gif" class="planet" id="planet4" draggable="true">
+    <img src="planets/planet5.gif" class="planet" id="planet5" draggable="true">
+    <img src="planets/planet6.gif" class="planet" id="planet6" draggable="true">
+    <img src="planets/planet7.gif" class="planet" id="planet7" draggable="true">
+    <img src="planets/planet8.gif" class="planet" id="planet8" draggable="true">
+  </div>
+
+  <div id="message"></div>
+
+  <!-- Ήχοι επιβράβευσης -->
+  <audio id="sound1" src="sounds/bravo1.wav" preload="auto"></audio>
+  <audio id="sound2" src="sounds/bravo2.wav" preload="auto"></audio>
+  <audio id="sound3" src="sounds/bravo3.wav" preload="auto"></audio>
+
+<script>
+const planets = Array.from(document.querySelectorAll(".planet"));
+const targets = document.querySelectorAll(".target");
+const successSounds = [
+  document.getElementById("sound1"),
+  document.getElementById("sound2"),
+  document.getElementById("sound3")
+];
+let placed = 0;
+
+// Make touch-friendly drag (pointer events) and desktop HTML5 drag as fallback
+planets.forEach(p => {
+  p.addEventListener('pointerdown', pointerDown);
+  p.addEventListener('dragstart', dragStart);
+});
+
+let currentDrag = null;
+let offsetX = 0, offsetY = 0;
+
+function pointerDown(e) {
+  e.preventDefault();
+  const p = e.currentTarget;
+  currentDrag = p;
+  p.setPointerCapture(e.pointerId);
+  const rect = p.getBoundingClientRect();
+  offsetX = e.clientX - rect.left;
+  offsetY = e.clientY - rect.top;
+  function move(ev) {
+    const area = document.getElementById('gameArea').getBoundingClientRect();
+    let x = ev.clientX - area.left - offsetX;
+    let y = ev.clientY - area.top - offsetY;
+    // keep within area
+    x = Math.max(0, Math.min(area.width - rect.width, x));
+    y = Math.max(0, Math.min(area.height - rect.height, y));
+    p.style.left = x + 'px';
+    p.style.top = y + 'px';
+  }
+  function up(ev) {
+    p.releasePointerCapture(e.pointerId);
+    document.removeEventListener('pointermove', move);
+    document.removeEventListener('pointerup', up);
+    // detect drop on a target
+    checkDrop(p);
+  }
+  document.addEventListener('pointermove', move);
+  document.addEventListener('pointerup', up);
+}
+
+// fallback HTML5 drag
+function dragStart(e) {
+  e.dataTransfer.setData("text", e.target.id);
+}
+
+function dragOver(e) {
+  e.preventDefault();
+}
+
+function drop(e, targetNum) {
+  e.preventDefault();
+  const planetId = e.dataTransfer.getData("text");
+  const planet = document.getElementById(planetId);
+  checkDrop(planet, e.target);
+}
+
+function checkDrop(planet, dropTarget=null) {
+  // If dropTarget provided (HTML5), use it; otherwise test overlap for pointer-based drop
+  let matched = false;
+  let correctTargetId = 'target' + planet.id.replace('planet','');
+  if (dropTarget) {
+    if (dropTarget.id === correctTargetId) matched = true;
+  } else {
+    // test overlap with each target
+    const pRect = planet.getBoundingClientRect();
+    targets.forEach(t => {
+      const tRect = t.getBoundingClientRect();
+      const overlap = !(pRect.right < tRect.left || pRect.left > tRect.right || pRect.bottom < tRect.top || pRect.top > tRect.bottom);
+      if (overlap && t.id === correctTargetId) matched = true;
+    });
+  }
+
+  if (matched) {
+    const targetEl = document.getElementById(correctTargetId);
+    planet.style.left = targetEl.style.left;
+    planet.style.top = targetEl.style.top;
+    planet.classList.add('correct');
+    planet.draggable = false;
+    planet.style.pointerEvents = 'none';
+    placed++;
+    const randomSound = successSounds[Math.floor(Math.random() * successSounds.length)];
+    randomSound.currentTime = 0;
+    randomSound.play();
+    document.getElementById('message').innerText = 'Μπράβο!';
+    if (placed === targets.length) {
+      document.getElementById('message').innerText = 'Μπράβο μικρέ αστροναύτη! 🚀🌕';
+    }
+  } else {
+    document.getElementById('message').innerText = 'Δοκίμασε ξανά!';
+  }
+}
+
+// set up HTML5 drop listeners and randomize start positions
+targets.forEach((target, index) => {
+  target.addEventListener('dragover', dragOver);
+  target.addEventListener('drop', (e) => drop(e, index+1));
+});
+
+window.addEventListener('load', () => {
+  const startY = Math.min(window.innerHeight*0.75, 650);
+  const startXPositions = shuffle([150, 250, 300, 350, 450, 550, 650, 750, 900, 1050, 1150]);
+  const used = startXPositions.slice(0, planets.length);
+  planets.forEach((planet, i) => {
+    planet.style.left = used[i] + 'px';
+    planet.style.top = startY + 'px';
+  });
+});
+
+// Fisher-Yates shuffle
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+</script>
+</body>
+</html>
