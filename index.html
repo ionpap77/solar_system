@@ -1,0 +1,353 @@
+
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ηλιακό Σύστημα</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <h1>Βάλε τους Πλανήτες στη Σωστή Θέση! ☀️🪐</h1>
+
+  <div id="space">
+    <img id="background" src="images/background.jpg" alt="Διάστημα" />
+    <img id="sun" src="images/Sun.gif" alt="Ήλιος" />
+
+    <!-- Θέσεις στόχων -->
+    <div id="target1" class="target" style="left:15%; top:35%;"></div>
+    <div id="target2" class="target" style="left:25%; top:35%;"></div>
+    <div id="target3" class="target" style="left:35%; top:35%;"></div>
+    <div id="target4" class="target" style="left:45%; top:35%;"></div>
+    <div id="target5" class="target" style="left:55%; top:35%;"></div>
+    <div id="target6" class="target" style="left:65%; top:35%;"></div>
+    <div id="target7" class="target" style="left:75%; top:35%;"></div>
+    <div id="target8" class="target" style="left:85%; top:35%;"></div>
+
+    <!-- Πλανήτες -->
+    <img src="images/mercury.gif" id="mercury"
+         class="planet" draggable="true" alt="Ερμής" />
+
+    <img src="images/venus.gif" id="venus"
+         class="planet" draggable="true" alt="Αφροδίτη" />
+
+    <img src="images/earth.gif" id="earth"
+         class="planet" draggable="true" alt="Γη" />
+
+    <img src="images/mars.gif" id="mars"
+         class="planet" draggable="true" alt="Άρης" />
+
+    <img src="images/jupiter.gif" id="jupiter"
+         class="planet" draggable="true" alt="Δίας" />
+
+    <img src="images/saturn.gif" id="saturn"
+         class="planet" draggable="true" alt="Κρόνος" />
+
+    <img src="images/uranus.gif" id="uranus"
+         class="planet" draggable="true" alt="Ουρανός" />
+
+    <img src="images/neptune.gif" id="neptune"
+         class="planet" draggable="true" alt="Ποσειδώνας" />
+
+    <div id="message"></div>
+  </div>
+
+  <!-- Ήχοι πλανητών -->
+  <audio id="sound-mercury"
+         src="sounds/planet1_voice.mp3" preload="auto"></audio>
+
+  <audio id="sound-venus"
+         src="sounds/planet2_voice.mp3" preload="auto"></audio>
+
+  <audio id="sound-earth"
+         src="sounds/planet3_voice.mp3" preload="auto"></audio>
+
+  <audio id="sound-mars"
+         src="sounds/planet4_voice.mp3" preload="auto"></audio>
+
+  <audio id="sound-jupiter"
+         src="sounds/planet5_voice.mp3" preload="auto"></audio>
+
+  <audio id="sound-saturn"
+         src="sounds/planet6_voice.mp3" preload="auto"></audio>
+
+  <audio id="sound-uranus"
+         src="sounds/planet7_voice.mp3" preload="auto"></audio>
+
+  <audio id="sound-neptune"
+         src="sounds/planet8_voice.mp3" preload="auto"></audio>
+
+  <!-- Ήχος ολοκλήρωσης -->
+  <audio id="sound-finale"
+         src="sounds/finale.mp3" preload="auto"></audio>
+
+  <!-- Ήχος λανθασμένης τοποθέτησης -->
+  <audio id="sound-try-again"
+         src="sounds/try_again.mp3" preload="auto"></audio>
+
+<script>
+
+// Αντιστοίχιση πλανητών, στόχων και ήχων
+const mapping = {
+  mercury: {
+    target: 'target1',
+    sound: 'sound-mercury'
+  },
+  venus: {
+    target: 'target2',
+    sound: 'sound-venus'
+  },
+  earth: {
+    target: 'target3',
+    sound: 'sound-earth'
+  },
+  mars: {
+    target: 'target4',
+    sound: 'sound-mars'
+  },
+  jupiter: {
+    target: 'target5',
+    sound: 'sound-jupiter'
+  },
+  saturn: {
+    target: 'target6',
+    sound: 'sound-saturn'
+  },
+  uranus: {
+    target: 'target7',
+    sound: 'sound-uranus'
+  },
+  neptune: {
+    target: 'target8',
+    sound: 'sound-neptune'
+  }
+};
+
+const planets = Array.from(
+  document.querySelectorAll('.planet')
+);
+
+const targets = Array.from(
+  document.querySelectorAll('.target')
+);
+
+const container = document.getElementById('space');
+const msg = document.getElementById('message');
+
+const finale = document.getElementById('sound-finale');
+const tryAgain = document.getElementById('sound-try-again');
+
+let placed = 0;
+let currentPlanet = null;
+let offsetX = 0;
+let offsetY = 0;
+
+// Θέσεις εκκίνησης των πλανητών
+window.addEventListener('load', () => {
+
+  planets.forEach(p => {
+
+    const xvw = 10 + Math.random() * 80;
+    const yvh = 55 + Math.random() * 20;
+
+    p.style.left = xvw + 'vw';
+    p.style.top = yvh + 'vh';
+
+  });
+
+});
+
+// Ενεργοποίηση μεταφοράς σε κινητά και υπολογιστές
+planets.forEach(p => {
+  p.addEventListener('pointerdown', startDrag);
+});
+
+// Έναρξη μεταφοράς
+function startDrag(e) {
+
+  e.preventDefault();
+
+  currentPlanet = e.currentTarget;
+
+  const rect = currentPlanet.getBoundingClientRect();
+
+  offsetX = e.clientX - rect.left;
+  offsetY = e.clientY - rect.top;
+
+  currentPlanet.setPointerCapture(e.pointerId);
+
+  currentPlanet.addEventListener('pointermove', moveDrag);
+  currentPlanet.addEventListener('pointerup', endDrag);
+
+}
+
+// Μετακίνηση πλανήτη
+function moveDrag(e) {
+
+  if (!currentPlanet) return;
+
+  const area = container.getBoundingClientRect();
+
+  const x = e.clientX - area.left - offsetX;
+  const y = e.clientY - area.top - offsetY;
+
+  currentPlanet.style.left =
+    (x / area.width * 100) + '%';
+
+  currentPlanet.style.top =
+    (y / area.height * 100) + '%';
+
+}
+
+// Ολοκλήρωση μεταφοράς
+function endDrag(e) {
+
+  if (!currentPlanet) return;
+
+  const planet = currentPlanet;
+
+  checkDrop(planet);
+
+  planet.releasePointerCapture(e.pointerId);
+
+  planet.removeEventListener('pointermove', moveDrag);
+  planet.removeEventListener('pointerup', endDrag);
+
+  currentPlanet = null;
+
+}
+
+// Έλεγχος σωστής ή λανθασμένης τοποθέτησης
+function checkDrop(planet) {
+
+  const map = mapping[planet.id];
+
+  if (!map) return;
+
+  const target = document.getElementById(map.target);
+
+  const cRect = container.getBoundingClientRect();
+  const pRect = planet.getBoundingClientRect();
+  const tRect = target.getBoundingClientRect();
+
+  const overlap = !(
+    pRect.right < tRect.left ||
+    pRect.left > tRect.right ||
+    pRect.bottom < tRect.top ||
+    pRect.top > tRect.bottom
+  );
+
+  // ΣΩΣΤΗ ΤΟΠΟΘΕΤΗΣΗ
+  if (overlap) {
+
+    const centerX =
+      (tRect.left - cRect.left) +
+      tRect.width / 2 -
+      pRect.width / 2;
+
+    const centerY =
+      (tRect.top - cRect.top) +
+      tRect.height / 2 -
+      pRect.height / 2;
+
+    planet.style.left =
+      (centerX / cRect.width * 100) + '%';
+
+    planet.style.top =
+      (centerY / cRect.height * 100) + '%';
+
+    if (!planet.classList.contains('correct')) {
+
+      planet.classList.add('correct');
+      target.classList.add('correct');
+
+      planet.style.pointerEvents = 'none';
+
+      placed++;
+
+      const s = document.getElementById(map.sound);
+
+      // Σταματά ο ήχος λανθασμένης προσπάθειας
+      if (tryAgain) {
+        tryAgain.pause();
+        tryAgain.currentTime = 0;
+      }
+
+      msg.textContent = 'Μπράβο!';
+
+      // ΕΛΕΓΧΟΣ ΟΛΟΚΛΗΡΩΣΗΣ ΠΑΙΧΝΙΔΙΟΥ
+      if (placed === planets.length) {
+
+        msg.textContent =
+          'Μπράβο μικρέ αστροναύτη! 🚀🌕';
+
+        // Ο τελικός ήχος ξεκινά ΜΟΝΟ
+        // αφού τελειώσει η φωνή του τελευταίου πλανήτη
+        if (s && finale) {
+
+          s.addEventListener('ended', () => {
+
+            finale.currentTime = 0;
+
+            finale.play().catch(err => {
+              console.log(
+                'Αδυναμία αναπαραγωγής τελικού ήχου:',
+                err
+              );
+            });
+
+          }, { once: true });
+
+        } else if (finale) {
+
+          finale.currentTime = 0;
+          finale.play().catch(err => console.log(err));
+
+        }
+
+      }
+
+      // Αναπαραγωγή φωνής πλανήτη
+      if (s) {
+
+        s.currentTime = 0;
+
+        s.play().catch(err => {
+          console.log(
+            'Αδυναμία αναπαραγωγής ήχου πλανήτη:',
+            err
+          );
+        });
+
+      }
+
+    }
+
+  } else {
+
+    // ΛΑΝΘΑΣΜΕΝΗ ΤΟΠΟΘΕΤΗΣΗ
+    msg.textContent = 'Δοκίμασε ξανά!';
+
+    if (tryAgain) {
+
+      tryAgain.pause();
+      tryAgain.currentTime = 0;
+
+      tryAgain.play().catch(err => {
+        console.log(
+          'Αδυναμία αναπαραγωγής ήχου λάθους:',
+          err
+        );
+      });
+
+    }
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
