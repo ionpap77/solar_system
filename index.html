@@ -9,127 +9,102 @@
 </head>
 
 <body>
-  <h1>Βάλε τους Πλανήτες στη Σωστή Θέση! ☀️🪐</h1>
 
-  <div id="space">
-    <img id="background" src="images/background.jpg" alt="Διάστημα" />
-    <img id="sun" src="images/Sun.gif" alt="Ήλιος" />
+<h1>Βάλε τους Πλανήτες στη Σωστή Θέση! ☀️🪐</h1>
 
-    <!-- Θέσεις στόχων -->
-    <div id="target1" class="target" style="left:15%; top:35%;"></div>
-    <div id="target2" class="target" style="left:25%; top:35%;"></div>
-    <div id="target3" class="target" style="left:35%; top:35%;"></div>
-    <div id="target4" class="target" style="left:45%; top:35%;"></div>
-    <div id="target5" class="target" style="left:55%; top:35%;"></div>
-    <div id="target6" class="target" style="left:65%; top:35%;"></div>
-    <div id="target7" class="target" style="left:75%; top:35%;"></div>
-    <div id="target8" class="target" style="left:85%; top:35%;"></div>
+<div id="space">
 
-    <!-- Πλανήτες -->
-    <img src="images/mercury.gif" id="mercury"
-         class="planet" draggable="true" alt="Ερμής" />
+  <img id="background" src="images/background.jpg" alt="Διάστημα" />
+  <img id="sun" src="images/Sun.gif" alt="Ήλιος" />
 
-    <img src="images/venus.gif" id="venus"
-         class="planet" draggable="true" alt="Αφροδίτη" />
+  <!-- Θέσεις στόχων -->
+  <div id="target1" class="target" style="left:15%; top:35%;"></div>
+  <div id="target2" class="target" style="left:25%; top:35%;"></div>
+  <div id="target3" class="target" style="left:35%; top:35%;"></div>
+  <div id="target4" class="target" style="left:45%; top:35%;"></div>
+  <div id="target5" class="target" style="left:55%; top:35%;"></div>
+  <div id="target6" class="target" style="left:65%; top:35%;"></div>
+  <div id="target7" class="target" style="left:75%; top:35%;"></div>
+  <div id="target8" class="target" style="left:85%; top:35%;"></div>
 
-    <img src="images/earth.gif" id="earth"
-         class="planet" draggable="true" alt="Γη" />
+  <!-- Πλανήτες -->
+  <img src="images/mercury.gif" id="mercury"
+       class="planet" draggable="true" alt="Ερμής" />
 
-    <img src="images/mars.gif" id="mars"
-         class="planet" draggable="true" alt="Άρης" />
+  <img src="images/venus.gif" id="venus"
+       class="planet" draggable="true" alt="Αφροδίτη" />
 
-    <img src="images/jupiter.gif" id="jupiter"
-         class="planet" draggable="true" alt="Δίας" />
+  <img src="images/earth.gif" id="earth"
+       class="planet" draggable="true" alt="Γη" />
 
-    <img src="images/saturn.gif" id="saturn"
-         class="planet" draggable="true" alt="Κρόνος" />
+  <img src="images/mars.gif" id="mars"
+       class="planet" draggable="true" alt="Άρης" />
 
-    <img src="images/uranus.gif" id="uranus"
-         class="planet" draggable="true" alt="Ουρανός" />
+  <img src="images/jupiter.gif" id="jupiter"
+       class="planet" draggable="true" alt="Δίας" />
 
-    <img src="images/neptune.gif" id="neptune"
-         class="planet" draggable="true" alt="Ποσειδώνας" />
+  <img src="images/saturn.gif" id="saturn"
+       class="planet" draggable="true" alt="Κρόνος" />
 
-    <div id="message"></div>
-  </div>
+  <img src="images/uranus.gif" id="uranus"
+       class="planet" draggable="true" alt="Ουρανός" />
 
-  <!-- Ήχοι πλανητών -->
-  <audio id="sound-mercury"
-         src="sounds/planet1_voice.mp3" preload="auto"></audio>
+  <img src="images/neptune.gif" id="neptune"
+       class="planet" draggable="true" alt="Ποσειδώνας" />
 
-  <audio id="sound-venus"
-         src="sounds/planet2_voice.mp3" preload="auto"></audio>
+  <div id="message"></div>
 
-  <audio id="sound-earth"
-         src="sounds/planet3_voice.mp3" preload="auto"></audio>
+</div>
 
-  <audio id="sound-mars"
-         src="sounds/planet4_voice.mp3" preload="auto"></audio>
+<!-- Ήχοι πλανητών -->
+<audio id="sound-mercury"
+       src="sounds/planet1_voice.mp3" preload="auto"></audio>
 
-  <audio id="sound-jupiter"
-         src="sounds/planet5_voice.mp3" preload="auto"></audio>
+<audio id="sound-venus"
+       src="sounds/planet2_voice.mp3" preload="auto"></audio>
 
-  <audio id="sound-saturn"
-         src="sounds/planet6_voice.mp3" preload="auto"></audio>
+<audio id="sound-earth"
+       src="sounds/planet3_voice.mp3" preload="auto"></audio>
 
-  <audio id="sound-uranus"
-         src="sounds/planet7_voice.mp3" preload="auto"></audio>
+<audio id="sound-mars"
+       src="sounds/planet4_voice.mp3" preload="auto"></audio>
 
-  <audio id="sound-neptune"
-         src="sounds/planet8_voice.mp3" preload="auto"></audio>
+<audio id="sound-jupiter"
+       src="sounds/planet5_voice.mp3" preload="auto"></audio>
 
-  <!-- Ήχος ολοκλήρωσης -->
-  <audio id="sound-finale"
-         src="sounds/finale.mp3" preload="auto"></audio>
+<audio id="sound-saturn"
+       src="sounds/planet6_voice.mp3" preload="auto"></audio>
 
-  <!-- Ήχος λανθασμένης τοποθέτησης -->
-  <audio id="sound-try-again"
-         src="sounds/try_again.mp3" preload="auto"></audio>
+<audio id="sound-uranus"
+       src="sounds/planet7_voice.mp3" preload="auto"></audio>
+
+<audio id="sound-neptune"
+       src="sounds/planet8_voice.mp3" preload="auto"></audio>
+
+<!-- Ήχος λανθασμένης προσπάθειας -->
+<audio id="sound-try-again"
+       src="sounds/try_again.mp3" preload="auto"></audio>
+
+<!-- Ήχος ολοκλήρωσης παιχνιδιού -->
+<audio id="sound-finale"
+       src="sounds/finale.mp3" preload="auto"></audio>
 
 <script>
 
-// Αντιστοίχιση πλανητών, στόχων και ήχων
+// Αντιστοίχιση πλανητών και θέσεων
 const mapping = {
-  mercury: {
-    target: 'target1',
-    sound: 'sound-mercury'
-  },
-  venus: {
-    target: 'target2',
-    sound: 'sound-venus'
-  },
-  earth: {
-    target: 'target3',
-    sound: 'sound-earth'
-  },
-  mars: {
-    target: 'target4',
-    sound: 'sound-mars'
-  },
-  jupiter: {
-    target: 'target5',
-    sound: 'sound-jupiter'
-  },
-  saturn: {
-    target: 'target6',
-    sound: 'sound-saturn'
-  },
-  uranus: {
-    target: 'target7',
-    sound: 'sound-uranus'
-  },
-  neptune: {
-    target: 'target8',
-    sound: 'sound-neptune'
-  }
+  mercury: { target: 'target1', sound: 'sound-mercury' },
+  venus:   { target: 'target2', sound: 'sound-venus' },
+  earth:   { target: 'target3', sound: 'sound-earth' },
+  mars:    { target: 'target4', sound: 'sound-mars' },
+  jupiter: { target: 'target5', sound: 'sound-jupiter' },
+  saturn:  { target: 'target6', sound: 'sound-saturn' },
+  uranus:  { target: 'target7', sound: 'sound-uranus' },
+  neptune: { target: 'target8', sound: 'sound-neptune' }
 };
 
 const planets = Array.from(
   document.querySelectorAll('.planet')
-);
-
-const targets = Array.from(
-  document.querySelectorAll('.target')
 );
 
 const container = document.getElementById('space');
@@ -143,7 +118,10 @@ let currentPlanet = null;
 let offsetX = 0;
 let offsetY = 0;
 
-// Θέσεις εκκίνησης των πλανητών
+// Κλείδωμα όσο ακούγεται η φωνή του πλανήτη
+let audioPlaying = false;
+
+// Αρχικές τυχαίες θέσεις
 window.addEventListener('load', () => {
 
   planets.forEach(p => {
@@ -158,13 +136,21 @@ window.addEventListener('load', () => {
 
 });
 
-// Ενεργοποίηση μεταφοράς σε κινητά και υπολογιστές
+// Ενεργοποίηση μεταφοράς
 planets.forEach(p => {
+
   p.addEventListener('pointerdown', startDrag);
+
 });
 
 // Έναρξη μεταφοράς
 function startDrag(e) {
+
+  // Αναμονή μέχρι να ολοκληρωθεί ο ήχος
+  if (audioPlaying) {
+    e.preventDefault();
+    return;
+  }
 
   e.preventDefault();
 
@@ -218,7 +204,7 @@ function endDrag(e) {
 
 }
 
-// Έλεγχος σωστής ή λανθασμένης τοποθέτησης
+// Έλεγχος τοποθέτησης
 function checkDrop(planet) {
 
   const map = mapping[planet.id];
@@ -266,50 +252,55 @@ function checkDrop(planet) {
 
       placed++;
 
-      const s = document.getElementById(map.sound);
-
-      // Σταματά ο ήχος λανθασμένης προσπάθειας
+      // Σταματά ο ήχος λάθους
       if (tryAgain) {
         tryAgain.pause();
         tryAgain.currentTime = 0;
       }
 
-      msg.textContent = 'Μπράβο!';
+      const s = document.getElementById(map.sound);
 
-      // ΕΛΕΓΧΟΣ ΟΛΟΚΛΗΡΩΣΗΣ ΠΑΙΧΝΙΔΙΟΥ
-      if (placed === planets.length) {
+      const isLastPlanet = placed === planets.length;
 
-        msg.textContent =
-          'Μπράβο μικρέ αστροναύτη! 🚀🌕';
+      msg.textContent = isLastPlanet
+        ? 'Μπράβο μικρέ αστροναύτη! 🚀🌕'
+        : 'Μπράβο!';
 
-        // Ο τελικός ήχος ξεκινά ΜΟΝΟ
-        // αφού τελειώσει η φωνή του τελευταίου πλανήτη
-        if (s && finale) {
+      // Κλείδωμα παιχνιδιού
+      audioPlaying = true;
 
-          s.addEventListener('ended', () => {
+      // Ενέργεια μετά την ολοκλήρωση της εκφώνησης
+      const finishPlanetSound = () => {
 
-            finale.currentTime = 0;
-
-            finale.play().catch(err => {
-              console.log(
-                'Αδυναμία αναπαραγωγής τελικού ήχου:',
-                err
-              );
-            });
-
-          }, { once: true });
-
-        } else if (finale) {
+        if (isLastPlanet && finale) {
 
           finale.currentTime = 0;
-          finale.play().catch(err => console.log(err));
+
+          finale.play().catch(err => {
+            console.log(
+              'Αδυναμία αναπαραγωγής τελικού ήχου:',
+              err
+            );
+            audioPlaying = false;
+          });
+
+        } else {
+
+          // Ξεκλείδωμα για τον επόμενο πλανήτη
+          audioPlaying = false;
 
         }
 
-      }
+      };
 
       // Αναπαραγωγή φωνής πλανήτη
       if (s) {
+
+        s.addEventListener(
+          'ended',
+          finishPlanetSound,
+          { once: true }
+        );
 
         s.currentTime = 0;
 
@@ -318,7 +309,18 @@ function checkDrop(planet) {
             'Αδυναμία αναπαραγωγής ήχου πλανήτη:',
             err
           );
+
+          s.removeEventListener(
+            'ended',
+            finishPlanetSound
+          );
+
+          finishPlanetSound();
         });
+
+      } else {
+
+        finishPlanetSound();
 
       }
 
